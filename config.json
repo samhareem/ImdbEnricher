@@ -1,0 +1,7 @@
+{
+  "datasetDirectory": "CHANGEME",
+  "imdbTitleFilePath": "CHANGEME",
+  "inputFileDelimiter": ";",
+  "maximumCandidateScore": 20,
+  "maximumChoiceCandidateScore": 1
+}
