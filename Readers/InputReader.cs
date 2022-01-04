@@ -50,7 +50,6 @@ namespace IMDBEnricher.Readers
                 searchTitles = new Dictionary<int, SearchTitle>();
                 return false;
             }
-            
         }
     }
 }

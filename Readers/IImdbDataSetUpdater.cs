@@ -5,6 +5,6 @@ namespace IMDBEnricher.Readers
 {
     public interface IImdbDataSetUpdater
     {
-        void UpdateTitleInformation();
+        void UpdateTitleInformation(string? datasetDirectory, string? dataFilePath);
     }
 }

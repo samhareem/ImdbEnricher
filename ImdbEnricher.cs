@@ -17,8 +17,8 @@ namespace IMDBEnricher
         private readonly IImdbDataSetUpdater _imdbDataSetUpdater;
         private readonly IComparer _comparer;
 
-        private readonly int _maximumCandidateScore;
-        private readonly int _maximumChoiceCandidateScore;
+        private int _maximumCandidateScore;
+        private int _maximumChoiceCandidateScore;
 
         public ImdbEnricher(IInputReader inputReader, IImdbTitleReader imdbTitleReader,
             IImdbDataSetUpdater imdbDataSetUpdater, IComparer comparer, IConfiguration config)
@@ -31,17 +31,22 @@ namespace IMDBEnricher
             _maximumChoiceCandidateScore = config.GetValue<int>("maximumChoiceCandidateScore");
         }
 
-        public bool UpdateImdbTitles()
+        public bool UpdateImdbTitles(string? datasetDirectory, string? dataFilePath)
         {
-            _imdbDataSetUpdater.UpdateTitleInformation();
+            _imdbDataSetUpdater.UpdateTitleInformation(datasetDirectory, dataFilePath);
             return true;
         }
 
-        public bool EnrichImdbInformation(string inputFile, string outputFilePath)
+        public bool EnrichImdbInformation(string inputFile, string outputFilePath, string? dataFilePath, int? maxCandidateScore,
+            int? maxChoiceCandidateScore)
         {
+            //Override config values if given as parameters
+            _maximumCandidateScore = maxCandidateScore ?? _maximumCandidateScore;
+            _maximumChoiceCandidateScore = maxChoiceCandidateScore ?? _maximumChoiceCandidateScore;
+
             using var outputFile = new StreamWriter(Path.GetFullPath(outputFilePath));
             
-            _imdbTitleReader.OpenFile();
+            _imdbTitleReader.OpenFile(dataFilePath);
             _inputReader.ReadSearchTitles(inputFile, out var searchTitles);
             var candidates = new Dictionary<int, List<Candidate>>();
             while (_imdbTitleReader.ReadImdbTitle(out var imdbTitle))

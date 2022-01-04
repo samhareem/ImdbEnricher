@@ -4,10 +4,8 @@ namespace IMDBEnricher.Readers
 {
     public interface IImdbTitleReader
     {
-        bool OpenFile();
+        bool OpenFile(string? dataFilePath);
         
         bool ReadImdbTitle(out Title? title);
-
-        bool Reset();
     }
 }

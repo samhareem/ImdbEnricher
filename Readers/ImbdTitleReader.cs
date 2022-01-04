@@ -1,19 +1,15 @@
 using System;
 using System.IO;
-using System.Net;
 using IMDBEnricher.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ServiceStack;
-using ServiceStack.Text;
-using ServiceStack.Extensions;
-
 namespace IMDBEnricher.Readers
 {
     public class ImdbTitleReader : IImdbTitleReader
     {
         private readonly ILogger<ImdbTitleReader> _logger;
-        private readonly string _imdbTitleFilePath;
+        private string _imdbTitleFilePath;
         private StreamReader? _fileStream;
 
         public ImdbTitleReader(ILogger<ImdbTitleReader> logger, IConfiguration config)
@@ -22,9 +18,11 @@ namespace IMDBEnricher.Readers
             _imdbTitleFilePath = Path.GetFullPath(config.GetValue<string>("imdbTitleFilePath"));
         }
 
-        public bool OpenFile()
+        public bool OpenFile(string? dataFilePath)
         {
-            _fileStream?.Dispose();
+            //Override configuration if parameter given
+            _imdbTitleFilePath = dataFilePath ?? _imdbTitleFilePath;
+            
             _logger.LogInformation( $"Attempting to open file {Path.GetFileName(_imdbTitleFilePath)}");
 
             try
@@ -50,12 +48,6 @@ namespace IMDBEnricher.Readers
 
             imdbTitle = null;
             return false;
-        }
-
-        public bool Reset()
-        {
-            _fileStream?.Dispose();
-            return OpenFile();
         }
     }
 }

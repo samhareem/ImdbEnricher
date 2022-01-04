@@ -13,8 +13,8 @@ namespace IMDBEnricher.Readers
     {
         private readonly ILogger<ImdbDataSetUpdater> _logger;
 
-        private readonly string _datasetDirectory;
-        private readonly string _imdbTitleFilePath;
+        private string _datasetDirectory;
+        private string _imdbTitleFilePath;
         private IDictionary<string, IReadOnlyCollection<CrewMember>> _titleDirectors = 
             new Dictionary<string, IReadOnlyCollection<CrewMember>>();
         private IDictionary<string, (float? AverageRating, int NumberOfRatings)> _titleRatings = 
@@ -32,8 +32,12 @@ namespace IMDBEnricher.Readers
             _imdbTitleFilePath = Path.GetFullPath(config.GetValue<string>("imdbTitleFilePath"));
         }
 
-        public void UpdateTitleInformation()
+        public void UpdateTitleInformation(string? datasetDirectory, string? dataFilePath)
         {
+            //Override config defaults if parameters provided
+            _datasetDirectory = datasetDirectory ?? _datasetDirectory;
+            _imdbTitleFilePath = dataFilePath ?? _imdbTitleFilePath;
+            
             //Build dataset paths based on dataset directory
             var crewDatasetPath = Path.Combine(_datasetDirectory, "name.basics.tsv/data.tsv");
             var titleCrewDatasetPath = Path.Combine(_datasetDirectory, "title.crew.tsv/data.tsv");
