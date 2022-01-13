@@ -2,6 +2,13 @@
 
 A simple command line tool for attempting to get IMDB data for uncertain movie titles based on title name, release year and director. Uses fuzzy logic to compare the given information to that of IMDB and outputs a list of candidates or a single candidate if a close match is found.
 
+The main use cases for the tool are...
+
+1) Attempting to confirm unreliable movie titles and get additional information for them. For example, those cases where you can't remember the exact name of a title but remember it came out in the 90s.
+2) Attempting to enrich a larger set of inaccurate and / or non-standardised titles with (relatively) standardised IMDB information. For example, if you have a set of titles that have been shown at a film festival, but some of the titles contain mistakes or are missing information.
+
+The inspiration for this tool came from the need to add genre information to a list of movies shown at the [Helsinki International Film Festival](https://hiff.fi/historia/). As the list (at the time) was quite messy, it proved difficult to link the titles to the IMDB datasets. Adding fuzzy logic to the comparison proved to be much more effective, particularily when combined with director names and release years to decrease the number of false positives caused by identical and near identical titles.
+
 ## Quickstart
 
 First download the necessary [IMDB Datasets](https://www.imdb.com/interfaces/). The following datasets are required by the program:
